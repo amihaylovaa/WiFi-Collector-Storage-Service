@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WifiScanResultRepository extends JpaRepository<WifiScanResult, Long> {
-
-
 }
