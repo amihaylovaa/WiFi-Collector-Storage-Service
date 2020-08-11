@@ -36,7 +36,10 @@ public class WifiLocationService {
         List<WifiLocation> wifiLocationsSaved = wifiLocationRepository.saveAll(wifiLocations);
         for (WifiLocation wifiLocation : wifiLocationsSaved) {
             List<WifiScanResult> wifiScanResults = wifiLocation.getWifiScanResults();
-            wifiScanResultRepository.saveAll(wifiScanResults);
+            for (WifiScanResult wifiScanResult : wifiScanResults) {
+                wifiScanResult.setWifiLocation(wifiLocation);
+                wifiScanResultRepository.save(wifiScanResult);
+            }
         }
 
         return wifiLocationsSaved;
@@ -93,7 +96,7 @@ public class WifiLocationService {
         String capabilities = wifiScanResult.getCapabilities();
         int frequency = wifiScanResult.getFrequency();
 
-        if (StringUtils.isEmpty(ssid)) {
+        if (ssid == null) {
             throw new InvalidFieldException(INVALID_SSID);
         }
         if (StringUtils.isEmpty(rssi)) {

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "wifi_locations")
+@Table(name = "locations")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,4 +37,16 @@ public class WifiLocation {
             orphanRemoval = true)
     @NotNull(message = "Wifi scan results list must not be null")
     private List<WifiScanResult> wifiScanResults;
+
+    public WifiLocation(long id, @DecimalMin(value = "-90", message = "Latitude must not be less than -90 degrees") @DecimalMax(value = "90", message = "Latitude must not be more than +90 degrees") double latitude, @DecimalMin(value = "-180", message = "Longitude must not be less than -180 degrees") @DecimalMax(value = "180", message = "Longitude must not be more than +189 degrees") double longitude, @NotNull(message = "Date and time must not be null") LocalDateTime localDateTime, @NotNull(message = "Wifi scan results list must not be null") List<WifiScanResult> wifiScanResults) {
+        this.id = id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.localDateTime = localDateTime;
+        this.wifiScanResults = wifiScanResults;
+    }
+
+    public WifiLocation(@DecimalMin(value = "-90", message = "Latitude must not be less than -90 degrees") @DecimalMax(value = "90", message = "Latitude must not be more than +90 degrees") double latitude, @DecimalMin(value = "-180", message = "Longitude must not be less than -180 degrees") @DecimalMax(value = "180", message = "Longitude must not be more than +189 degrees") double longitude, @NotNull(message = "Date and time must not be null") LocalDateTime localDateTime, @NotNull(message = "Wifi scan results list must not be null") List<WifiScanResult> wifiScanResults) {
+        this(0, latitude, longitude, localDateTime, wifiScanResults);
+    }
 }
