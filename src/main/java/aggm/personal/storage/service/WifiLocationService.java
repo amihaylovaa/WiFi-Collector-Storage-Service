@@ -1,17 +1,13 @@
 package aggm.personal.storage.service;
 
-import aggm.personal.storage.domain.WifiLocation;
-import aggm.personal.storage.domain.WifiScanResult;
-import aggm.personal.storage.exception.InvalidArgumentException;
-import aggm.personal.storage.exception.InvalidFieldException;
+import aggm.personal.storage.domain.*;
+import aggm.personal.storage.exception.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import aggm.personal.storage.repository.WifiLocationRepository;
-import aggm.personal.storage.repository.WifiScanResultRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,39 +15,29 @@ import java.util.List;
 import static aggm.personal.storage.utility.Constants.*;
 
 @Service
-@Transactional
 public class WifiLocationService {
 
     private final WifiLocationRepository wifiLocationRepository;
-    private final WifiScanResultRepository wifiScanResultRepository;
 
     @Autowired
-    public WifiLocationService(WifiLocationRepository wifiLocationRepository, WifiScanResultRepository wifiScanResultRepository) {
+    public WifiLocationService(WifiLocationRepository wifiLocationRepository) {
         this.wifiLocationRepository = wifiLocationRepository;
-        this.wifiScanResultRepository = wifiScanResultRepository;
     }
 
     public List<WifiLocation> saveAll(List<WifiLocation> wifiLocations) {
-        validateWifiLocations(wifiLocations);
-        List<WifiLocation> wifiLocationsSaved = wifiLocationRepository.saveAll(wifiLocations);
-        for (WifiLocation wifiLocation : wifiLocationsSaved) {
-            List<WifiScanResult> wifiScanResults = wifiLocation.getWifiScanResults();
-            for (WifiScanResult wifiScanResult : wifiScanResults) {
-                wifiScanResult.setWifiLocation(wifiLocation);
-                wifiScanResultRepository.save(wifiScanResult);
-            }
-        }
-
-        return wifiLocationsSaved;
-    }
-
-    private void validateWifiLocations(List<WifiLocation> wifiLocations) {
         if (ObjectUtils.isEmpty(wifiLocations)) {
             throw new InvalidArgumentException(INVALID_WIFI_LOCATION_LIST);
         }
+
         for (WifiLocation wifiLocation : wifiLocations) {
             validateWifiLocation(wifiLocation);
+            List<WifiScanResult> wifiScanResults = wifiLocation.getWifiScanResults();
+            for (WifiScanResult wifiScanResult : wifiScanResults) {
+                wifiScanResult.setWifiLocation(wifiLocation);
+            }
         }
+
+        return wifiLocationRepository.saveAll(wifiLocations);
     }
 
     private void validateWifiLocation(WifiLocation wifiLocation) {
@@ -63,7 +49,6 @@ public class WifiLocationService {
         double longitude = wifiLocation.getLongitude();
         LocalDateTime localDateTime = wifiLocation.getLocalDateTime();
         List<WifiScanResult> wifiScanResults = wifiLocation.getWifiScanResults();
-        validateWifiScanResults(wifiScanResults);
 
         if (latitude > POSITIVE_NINETY_DEGREES || latitude < NEGATIVE_NINETY_DEGREES) {
             throw new InvalidFieldException(INVALID_LATITUDE);
@@ -74,6 +59,8 @@ public class WifiLocationService {
         if (localDateTime == null) {
             throw new InvalidFieldException(INVALID_DATE_TIME);
         }
+
+        validateWifiScanResults(wifiScanResults);
     }
 
     public void validateWifiScanResults(List<WifiScanResult> wifiScanResults) {
