@@ -1,5 +1,6 @@
 package aggm.personal.storage.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class WifiLocation {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @NotNull(message = "Wifi scan results list must not be null")
+    @JsonManagedReference
     private List<WifiScanResult> wifiScanResults;
 
     public WifiLocation(long id,

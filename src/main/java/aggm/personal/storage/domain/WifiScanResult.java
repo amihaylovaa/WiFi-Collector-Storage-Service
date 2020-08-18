@@ -1,5 +1,6 @@
 package aggm.personal.storage.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class WifiScanResult {
     private int frequency;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wifi_location_id")
+    @JsonBackReference
     private WifiLocation wifiLocation;
 
     public WifiScanResult(long id,
