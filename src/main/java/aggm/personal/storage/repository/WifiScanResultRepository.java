@@ -1,6 +1,6 @@
 package aggm.personal.storage.repository;
 
-import aggm.personal.storage.domain.WifiScanResult;
+import aggm.personal.storage.entity.WifiScanResult;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

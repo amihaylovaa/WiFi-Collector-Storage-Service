@@ -1,6 +1,6 @@
 package aggm.personal.storage.controller;
 
-import aggm.personal.storage.domain.WifiLocation;
+import aggm.personal.storage.entity.WifiLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

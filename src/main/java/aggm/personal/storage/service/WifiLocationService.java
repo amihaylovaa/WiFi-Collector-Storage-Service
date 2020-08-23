@@ -1,6 +1,6 @@
 package aggm.personal.storage.service;
 
-import aggm.personal.storage.domain.*;
+import aggm.personal.storage.entity.*;
 import aggm.personal.storage.exception.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
