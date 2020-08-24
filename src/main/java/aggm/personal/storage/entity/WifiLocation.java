@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name = "locations")
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class WifiLocation {
     @Id
@@ -66,12 +67,8 @@ public class WifiLocation {
                                 LocalDateTime localDateTime,
                         @NotNull(message = "Wifi scan results list must not be null")
                                 List<WifiScanResult> wifiScanResults) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.localDateTime = localDateTime;
-        this.wifiScanResults = wifiScanResults;
+        this(0, latitude, longitude, localDateTime, wifiScanResults);
     }
-
     public WifiLocation(@DecimalMin(value = "-90", message = "Latitude must not be less than -90 degrees")
                         @DecimalMax(value = "90", message = "Latitude must not be more than +90 degrees")
                                 double latitude,
@@ -79,8 +76,7 @@ public class WifiLocation {
                         @DecimalMax(value = "180", message = "Longitude must not be more than +189 degrees")
                                 double longitude,
                         @NotNull(message = "Date and time must not be null")
-                                LocalDateTime localDateTime
-                     ) {
+                                LocalDateTime localDateTime) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.localDateTime = localDateTime;

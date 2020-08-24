@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "wifi")
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class WifiScanResult {
     @Id
@@ -36,7 +37,6 @@ public class WifiScanResult {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wifi_location_id")
     @JsonBackReference
-    @ToString.Exclude
     private WifiLocation wifiLocation;
 
     public WifiScanResult(long id,
@@ -63,9 +63,10 @@ public class WifiScanResult {
         this.wifiLocation = wifiLocation;
     }
 
-    public WifiScanResult(String bssid,
+    public WifiScanResult(@NotNull(message = "BSSID must not be null")
+                          @NotEmpty(message = "BSSID must not be empty")
+                                  String bssid,
                           @NotNull(message = "SSID must not be null")
-                          @NotEmpty(message = "SSID must not be empty")
                                   String ssid,
                           @NotNull(message = "RSSI must not be null")
                           @NotEmpty(message = "RSSI must not be empty")
@@ -75,12 +76,7 @@ public class WifiScanResult {
                                   String capabilities,
                           int frequency,
                           WifiLocation wifiLocation) {
-        this.bssid = bssid;
-        this.ssid = ssid;
-        this.rssi = rssi;
-        this.capabilities = capabilities;
-        this.frequency = frequency;
-        this.wifiLocation = wifiLocation;
+        this(0, bssid, ssid, rssi, capabilities, frequency, wifiLocation);
     }
 
     public WifiScanResult(@NotNull(message = "BSSID must not be null")
