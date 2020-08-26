@@ -301,7 +301,6 @@ class WifiLocationServiceTest {
         WifiLocation wifiLocation = new WifiLocation(latitude, longitude, localDateTime);
         List<WifiScanResult> expectedWifiScanResults = new ArrayList<>();
         List<WifiLocation> expectedWifiLocationList = new ArrayList<>();
-        wifiScanResult.setWifiLocation(wifiLocation);
         expectedWifiScanResults.add(wifiScanResult);
         wifiLocation.setWifiScanResults(expectedWifiScanResults);
         expectedWifiLocationList.add(wifiLocation);

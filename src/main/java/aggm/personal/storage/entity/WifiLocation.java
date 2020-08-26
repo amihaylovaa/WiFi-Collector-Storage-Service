@@ -1,6 +1,5 @@
 package aggm.personal.storage.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,12 +30,11 @@ public class WifiLocation {
     @Column(name = "date_time")
     @NotNull(message = "Date and time must not be null")
     private LocalDateTime localDateTime;
-    @OneToMany(targetEntity = WifiScanResult.class,
-            mappedBy = "wifiLocation",
+    @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JoinColumn(name = "wifi_location_id")
     @NotNull(message = "Wifi scan results list must not be null")
-    @JsonManagedReference
     private List<WifiScanResult> wifiScanResults;
 
     public WifiLocation(long id,
@@ -69,6 +67,7 @@ public class WifiLocation {
                                 List<WifiScanResult> wifiScanResults) {
         this(0, latitude, longitude, localDateTime, wifiScanResults);
     }
+
     public WifiLocation(@DecimalMin(value = "-90", message = "Latitude must not be less than -90 degrees")
                         @DecimalMax(value = "90", message = "Latitude must not be more than +90 degrees")
                                 double latitude,

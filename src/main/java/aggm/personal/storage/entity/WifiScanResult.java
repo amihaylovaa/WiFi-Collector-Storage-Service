@@ -1,6 +1,5 @@
 package aggm.personal.storage.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,10 +33,6 @@ public class WifiScanResult {
     private String capabilities;
     @Column(name = "frequency")
     private int frequency;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wifi_location_id")
-    @JsonBackReference
-    private WifiLocation wifiLocation;
 
     public WifiScanResult(long id,
                           @NotNull(message = "BSSID must not be null")
@@ -52,31 +47,13 @@ public class WifiScanResult {
                           @NotNull(message = "Capabilities must not be null")
                           @NotEmpty(message = "Capabilities must not be empty")
                                   String capabilities,
-                          int frequency,
-                          WifiLocation wifiLocation) {
+                          int frequency) {
         this.id = id;
         this.bssid = bssid;
         this.ssid = ssid;
         this.rssi = rssi;
         this.capabilities = capabilities;
         this.frequency = frequency;
-        this.wifiLocation = wifiLocation;
-    }
-
-    public WifiScanResult(@NotNull(message = "BSSID must not be null")
-                          @NotEmpty(message = "BSSID must not be empty")
-                                  String bssid,
-                          @NotNull(message = "SSID must not be null")
-                                  String ssid,
-                          @NotNull(message = "RSSI must not be null")
-                          @NotEmpty(message = "RSSI must not be empty")
-                                  String rssi,
-                          @NotNull(message = "Capabilities must not be null")
-                          @NotEmpty(message = "Capabilities must not be empty")
-                                  String capabilities,
-                          int frequency,
-                          WifiLocation wifiLocation) {
-        this(0, bssid, ssid, rssi, capabilities, frequency, wifiLocation);
     }
 
     public WifiScanResult(@NotNull(message = "BSSID must not be null")
@@ -91,10 +68,6 @@ public class WifiScanResult {
                           @NotEmpty(message = "Capabilities must not be empty")
                                   String capabilities,
                           int frequency) {
-        this.bssid = bssid;
-        this.ssid = ssid;
-        this.rssi = rssi;
-        this.capabilities = capabilities;
-        this.frequency = frequency;
+        this(0, bssid, ssid, rssi, capabilities, frequency);
     }
 }

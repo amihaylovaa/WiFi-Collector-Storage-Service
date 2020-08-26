@@ -31,10 +31,6 @@ public class WifiLocationService {
 
         for (WifiLocation wifiLocation : wifiLocations) {
             validateWifiLocation(wifiLocation);
-            List<WifiScanResult> wifiScanResults = wifiLocation.getWifiScanResults();
-            for (WifiScanResult wifiScanResult : wifiScanResults) {
-                wifiScanResult.setWifiLocation(wifiLocation);
-            }
         }
 
         return wifiLocationRepository.saveAll(wifiLocations);
@@ -72,6 +68,7 @@ public class WifiLocationService {
         }
     }
 
+    // todo exception handling
     public void validateWifiScanResult(WifiScanResult wifiScanResult) {
         if (ObjectUtils.isEmpty(wifiScanResult)) {
             throw new InvalidArgumentException(WIFI_SCAN_RESULT_NULL_MESSAGE);
