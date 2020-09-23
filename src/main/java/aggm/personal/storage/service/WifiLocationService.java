@@ -1,6 +1,6 @@
 package aggm.personal.storage.service;
 
-import aggm.personal.storage.entity.*;
+import aggm.personal.storage.domain.*;
 import aggm.personal.storage.exception.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,10 +46,10 @@ public class WifiLocationService {
         LocalDateTime localDateTime = wifiLocation.getLocalDateTime();
         List<WifiScanResult> wifiScanResults = wifiLocation.getWifiScanResults();
 
-        if (latitude > POSITIVE_NINETY_DEGREES || latitude < NEGATIVE_NINETY_DEGREES) {
+        if (latitude > MAX_LATITUDE || latitude < MIN_LATITUDE) {
             throw new InvalidFieldException(INVALID_LATITUDE);
         }
-        if (longitude > POSITIVE_ONE_HUNDRED_AND_EIGHTY_DEGREES || longitude < NEGATIVE_ONE_HUNDRED_AND_EIGHTY_DEGREES) {
+        if (longitude > MAX_LONGITUDE || longitude < MIN_LONGITUDE) {
             throw new InvalidFieldException(INVALID_LONGITUDE);
         }
         if (localDateTime == null) {
@@ -68,14 +68,13 @@ public class WifiLocationService {
         }
     }
 
-    // todo exception handling
     public void validateWifiScanResult(WifiScanResult wifiScanResult) {
         if (ObjectUtils.isEmpty(wifiScanResult)) {
             throw new InvalidArgumentException(WIFI_SCAN_RESULT_NULL_MESSAGE);
         }
 
         String ssid = wifiScanResult.getSsid();
-        String rssi = wifiScanResult.getRssi();
+        int rssi = wifiScanResult.getRssi();
         String bssid = wifiScanResult.getBssid();
         String capabilities = wifiScanResult.getCapabilities();
         int frequency = wifiScanResult.getFrequency();
@@ -83,13 +82,10 @@ public class WifiLocationService {
         if (ssid == null) {
             throw new InvalidFieldException(INVALID_SSID);
         }
-        if (StringUtils.isEmpty(rssi)) {
-            throw new InvalidFieldException(INVALID_RSSI);
-        }
         if (StringUtils.isEmpty(bssid)) {
             throw new InvalidFieldException(INVALID_BSSID);
         }
-        if (StringUtils.isEmpty(capabilities)) {
+        if (capabilities == null) {
             throw new InvalidFieldException(INVALID_CAPABILITIES);
         }
         if (frequency <= NumberUtils.INTEGER_ZERO) {

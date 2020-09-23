@@ -1,7 +1,7 @@
 package aggm.personal.storage.service;
 
-import aggm.personal.storage.entity.WifiLocation;
-import aggm.personal.storage.entity.WifiScanResult;
+import aggm.personal.storage.domain.WifiLocation;
+import aggm.personal.storage.domain.WifiScanResult;
 import aggm.personal.storage.exception.InvalidArgumentException;
 import aggm.personal.storage.exception.InvalidFieldException;
 import aggm.personal.storage.repository.WifiLocationRepository;
@@ -125,7 +125,7 @@ class WifiLocationServiceTest {
         double longitude = 24.742168;
         int frequency = 31;
         String ssid = null;
-        String rssi = "-32";
+        int rssi = -32;
         String bssid = "12:34:56:d8:81";
         String capabilities = "[WPA2-PSK-CCMP][RSN-PSK-CCMP][ESS][WPS][WFA-HT]";
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -146,7 +146,7 @@ class WifiLocationServiceTest {
         double longitude = 24.742168;
         int frequency = 31;
         String ssid = "someName";
-        String rssi = "-32";
+        int rssi = -32;
         String bssid = null;
         String capabilities = "[WPA2-PSK-CCMP][RSN-PSK-CCMP][ESS][WPS][WFA-HT]";
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -166,50 +166,8 @@ class WifiLocationServiceTest {
         double latitude = 42.136097;
         double longitude = 24.742168;
         String ssid = "someName";
-        String rssi = "-32";
+        int rssi = -32;
         String bssid = "";
-        String capabilities = "[WPA2-PSK-CCMP][RSN-PSK-CCMP][ESS][WPS][WFA-HT]";
-        int frequency = 31;
-        LocalDateTime localDateTime = LocalDateTime.now();
-        WifiScanResult wifiScanResult = new WifiScanResult(bssid, ssid, rssi, capabilities, frequency);
-        List<WifiScanResult> scanResults = new ArrayList<>();
-        WifiLocation wifiLocation = new WifiLocation(latitude, longitude, localDateTime, scanResults);
-        List<WifiLocation> wifiLocations = new ArrayList<>();
-
-        scanResults.add(wifiScanResult);
-        wifiLocations.add(wifiLocation);
-
-        assertThrows(InvalidFieldException.class, () -> wifiLocationService.saveAll(wifiLocations));
-    }
-
-    @Test
-    void saveAll_RSSIIsNull_ExceptionThrown() {
-        double latitude = 42.136097;
-        double longitude = 24.742168;
-        String ssid = "someName";
-        String rssi = null;
-        String bssid = "12:34:56:d8:81";
-        String capabilities = "[WPA2-PSK-CCMP][RSN-PSK-CCMP][ESS][WPS][WFA-HT]";
-        int frequency = 31;
-        LocalDateTime localDateTime = LocalDateTime.now();
-        WifiScanResult wifiScanResult = new WifiScanResult(bssid, ssid, rssi, capabilities, frequency);
-        List<WifiScanResult> scanResults = new ArrayList<>();
-        WifiLocation wifiLocation = new WifiLocation(latitude, longitude, localDateTime, scanResults);
-        List<WifiLocation> wifiLocations = new ArrayList<>();
-
-        scanResults.add(wifiScanResult);
-        wifiLocations.add(wifiLocation);
-
-        assertThrows(InvalidFieldException.class, () -> wifiLocationService.saveAll(wifiLocations));
-    }
-
-    @Test
-    void saveAll_RSSIIsEmpty_ExceptionThrown() {
-        double latitude = 42.136097;
-        double longitude = 24.742168;
-        String ssid = "someName";
-        String rssi = "";
-        String bssid = "12:34:56:d8:81";
         String capabilities = "[WPA2-PSK-CCMP][RSN-PSK-CCMP][ESS][WPS][WFA-HT]";
         int frequency = 31;
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -229,30 +187,9 @@ class WifiLocationServiceTest {
         double latitude = 42.136097;
         double longitude = 24.742168;
         String ssid = "someName";
-        String rssi = "-32";
+        int rssi = -32;
         String bssid = "12:34:56:d8:81";
         String capabilities = null;
-        int frequency = 31;
-        LocalDateTime localDateTime = LocalDateTime.now();
-        WifiScanResult wifiScanResult = new WifiScanResult(bssid, ssid, rssi, capabilities, frequency);
-        List<WifiScanResult> scanResults = new ArrayList<>();
-        WifiLocation wifiLocation = new WifiLocation(latitude, longitude, localDateTime, scanResults);
-        List<WifiLocation> wifiLocations = new ArrayList<>();
-
-        scanResults.add(wifiScanResult);
-        wifiLocations.add(wifiLocation);
-
-        assertThrows(InvalidFieldException.class, () -> wifiLocationService.saveAll(wifiLocations));
-    }
-
-    @Test
-    void saveAll_CapabilitiesAreEmpty_ExceptionThrown() {
-        double latitude = 42.136097;
-        double longitude = 24.742168;
-        String ssid = "someName";
-        String rssi = "-32";
-        String bssid = "12:34:56:d8:81";
-        String capabilities = "";
         int frequency = 31;
         LocalDateTime localDateTime = LocalDateTime.now();
         WifiScanResult wifiScanResult = new WifiScanResult(bssid, ssid, rssi, capabilities, frequency);
@@ -271,7 +208,7 @@ class WifiLocationServiceTest {
         double latitude = 42.136097;
         double longitude = 24.742168;
         String ssid = "someName";
-        String rssi = "-32";
+        int rssi = -32;
         String bssid = "12:34:56:d8:81";
         String capabilities = "[WPA2-PSK-CCMP][RSN-PSK-CCMP][ESS][WPS][WFA-HT]";
         int frequency = -31;
@@ -292,17 +229,17 @@ class WifiLocationServiceTest {
         double latitude = 42.136097;
         double longitude = 24.742168;
         String ssid = "someName";
-        String rssi = "-32";
+        int rssi = -32;
         String bssid = "12:34:56:d8:81";
         String capabilities = "[WPA2-PSK-CCMP][RSN-PSK-CCMP][ESS][WPS][WFA-HT]";
         int frequency = 31;
         LocalDateTime localDateTime = LocalDateTime.now();
         WifiScanResult wifiScanResult = new WifiScanResult(bssid, ssid, rssi, capabilities, frequency);
-        WifiLocation wifiLocation = new WifiLocation(latitude, longitude, localDateTime);
         List<WifiScanResult> expectedWifiScanResults = new ArrayList<>();
         List<WifiLocation> expectedWifiLocationList = new ArrayList<>();
         expectedWifiScanResults.add(wifiScanResult);
-        wifiLocation.setWifiScanResults(expectedWifiScanResults);
+        WifiLocation wifiLocation = new WifiLocation(latitude, longitude, localDateTime, expectedWifiScanResults);
+
         expectedWifiLocationList.add(wifiLocation);
 
         when(wifiLocationRepository.saveAll(expectedWifiLocationList)).thenReturn(expectedWifiLocationList);
