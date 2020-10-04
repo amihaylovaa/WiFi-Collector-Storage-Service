@@ -1,4 +1,4 @@
-**Wi-Fi Collector storage service ** is a simple rest service powered and managed by Spring boot.
+**Wi-Fi Collector storage service** is a simple rest service powered and managed by Spring boot.
 Its purpose is to present interface between the mobile application [Wi-Fi collector](https://github.com/amihaylovaa/WiFi-Collector) and PostreSQL - stores data in 
 the database that the mobile app has received and sent to the web server.
 
