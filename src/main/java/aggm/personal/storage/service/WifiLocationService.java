@@ -74,7 +74,6 @@ public class WifiLocationService {
         }
 
         String ssid = wifiScanResult.getSsid();
-        int rssi = wifiScanResult.getRssi();
         String bssid = wifiScanResult.getBssid();
         String capabilities = wifiScanResult.getCapabilities();
         int frequency = wifiScanResult.getFrequency();
